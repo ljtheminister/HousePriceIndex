@@ -25,3 +25,25 @@ names(data)
 repsales <- data[duplicated(data$propertyid),]
 
 
+min_date <- as.Date(min(transdate_previous, na.rm=TRUE))
+max_date <- as.Date(max(transdate, na.rm=TRUE))
+
+# sequence of dates in date_range
+date_range <- as.character(seq(from=min_date, to=max_date, by=1))
+
+date_map = list()
+for (i in 1:length(date_range)) {
+  date_map[date_range[i]] <- i
+}
+
+propertyid_groups <- split(data, data$propertyid)
+fix_chain <- function(grp) {
+  for (i in (1:nrow(grp)-1)) {
+    grp$transvalue[i] <- grp$transvalue_previous[i+1]
+    grp$transdate[i] <- grp$transdate_previous[i+1]
+  }
+  return (grp)
+}
+
+lapply(s, fix_chain)
+unsplit(t, .(propertyid))

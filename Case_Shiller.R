@@ -76,10 +76,10 @@ e <- residuals(fit1) # take the residuals
 data$saletime <- data$t1 - data$t0 # compute interval time between sales
 # Step 2: Fit residuals
 fit2 <- lm(e^2 ~ data$saletime) # regress sqiared residuals against gap time
-W <- fitted(fit2)
-W <- ifelse(W>0, 1/sqrt(W), 0) # make non-negative, take reciprocal of sqrt of fitted values - estimated standard deviations used
+w <- fitted(fit2)
+w <- ifelse(w>0, 1/sqrt(w), 0) # make non-negative, take reciprocal of sqrt of fitted values - estimated standard deviations used
 # Step 3: Weighted Least Squares regression
-fit_CS <- lm(dy ~ X + 0, weights=W)
+fit_CS <- lm(dy ~ X + 0, weights=w)
 
 
 ## Code I don't use 
